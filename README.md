@@ -45,6 +45,13 @@ When temp or UV go beyond the set min/max values, the numbers on the homescreen 
 Control:
 The whole system is controlled by an arduino mega 2560 and uses a Nextion 4024T032 touch display. I had a lot of debate with some other about a manual/physical control instead of wifi via app/browser which is easier and less coding. This is because i know a lot of keepers keep animals in basements and general out of reach or  more isolated places/rooms where the wifi doenst reach. Also safety. If the wifi fails either because your isp has malfunction or the systems wifi itself fails, you cant control anything anymore and have to take the system off. Now you can always go to the console itself and adjust settings etc. but we live in 2020, so its a touch display and no ohysical buttons ( although i prefer actual buttons). The home screen shows all the basic things, temp, time (actual time aswel as dusk and dawn) date and all the pages for the settings named: LIGHT, MISTER, LED, FAN, FOGGER, SYSTEM. If pressed you go to the named functions as explained above.
 
+Libraries used:
+Dusk2dawn.h
+TimeLib.h
+DS3132.h
+EEPROM.h
+DHT.h
+
 
 This system is made to greatly improve the overal animal health but also to trigger the enduser to educate themself. To abstain from feedbackloops the enduser is forced to find more information about lighting and temperature and overal setup of the enclusore for the animal the keep. Every animal has its own specific habitat, and specially foe reptiles and amfibians who tend to be very specificly adapted to certain envoiromental aspects, its very important to know what you are doing. But some things like seasonal shift are just very hard to create, so i hope this system will take that weight of your shoulders!
 I would love to get feedback and see extra's added. Im not a programmer and this system has been in the works for at least 3 years now and i have had some great help from people in the community but it is far from perfect. But this was the best i could do so far. 
