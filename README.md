@@ -1,4 +1,4 @@
-# Envoiromate
+# Enviromate
 Terrarium seasonal climate controller
 
 With arduino mega 2560
