@@ -301,7 +301,22 @@ float mapfloat(float x, float in_min, float in_max, float out_min, float out_max
 //UVI einde --------------------------------------------------------------------------------------
 
 
-void backlight(){
+void backlight(Time timeNow){
+  uint8_t minDiff = timeNow.min - lastTouchTime.min;
+  uint8_t secDiff = timeNow.sec - lastTouchTime.sec;
+  if((minDiff*60+secDiff) >= backlightTimeSec){
+        if(displayLight>brightnessMin){
+      displayLight--;
+    }
+  } else{
+    if(displayLight<brightnessMax){
+      displayLight++;
+    }
+  }
+  Serial1.print("dim=");
+  Serial1.print(displayLight);
+  endString();
+/*
   word LDRValue = analogRead(A7);
   word valLDR;
   if (LDRValue < LDRdrempel) { valLDR = map(LDRValue, 0, LDRdrempel, 30, 70);}
@@ -320,5 +335,5 @@ void backlight(){
     Serial.print(displayLight);
     Serial.print(", ");
 */
-  }
+//  }
 }

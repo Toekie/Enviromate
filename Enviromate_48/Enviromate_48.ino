@@ -94,6 +94,11 @@ opnieuw gesaved worden met de deafult waarden.
 */
 #define check 28
 
+#define backlightTimeSec   30  // time before the screen will be darkened
+#define brightnessMin      30  // minimal brightness
+#define brightnessMax      100 // maximal brightness
+
+Time lastTouchTime;
 word LDRdrempel = 600;
 word displayLight = 50;
 word lastdisplayLight;
@@ -240,6 +245,7 @@ void setup()  {
   // Initialize the rtc object
   rtc.begin();
   setRTCtime();
+  lastTouchTime = rtc.getTime();
   String zt = (zomer == 1) ? "Zomertijd" : "Wintertijd";
   Serial.println(zt);
   ZonOpZonOnder();
@@ -385,20 +391,23 @@ boolean serialInput() {
 
 // nextion seriele input
 boolean nexserialInput() {
-  while (Serial1.available()) {
-    char inChar = (char)Serial1.read();
-    if (isAscii(inChar)) {
-      if (inChar != '\r') {
-        inputString += inChar;
+  if(Serial1.available()){
+    while (Serial1.available()) {
+      char inChar = (char)Serial1.read();
+      if (isAscii(inChar)) {
+        if (inChar != '\r') {
+          inputString += inChar;
+        }
+      }
+      if (inChar == '\r') {
+        inputString.replace("\n", "");
+        inputString += "~";
+        inputComplete = true;
       }
     }
-    if (inChar == '\r') {
-      inputString.replace("\n", "");
-      inputString += "~";
-      inputComplete = true;
-    }
+    return true;
   }
-  //return false;
+  return false;
 }
 
 
@@ -433,7 +442,7 @@ void loop() {
     UV_OnOff();     // in-, uitschakelen UV lamp
     Warmte_OnOff(); // in-, uitschakelen warmte lamp
     alarmBeep();    // Alarm beeper
-    backlight();    // regel nextion backlight
+    backlight(rtc.getTime());    // regel nextion backlight
 
     if (Debug) {
       DebugOutput(); // seriële info naar monitor
@@ -452,8 +461,13 @@ void loop() {
   }
   /* einde 1 seconde loop */
 
+  backlight(rtc.getTime());    // regel nextion backlight
+
   // dit deel draait op max snelheid
-  nexserialInput();
+  if (nexserialInput()){
+    // update touch time for backlight
+    lastTouchTime = rtc.getTime();
+  }
   if (inputComplete == false) {
     serialInput();
   }
